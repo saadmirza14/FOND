@@ -129,8 +129,6 @@ test_loader = DataLoader(test_dataset, batch_size=2, shuffle=False, pin_memory=T
 
 k_values = [5]
 alpha_values = [0.7]
-weight_decay_values = [0.01]
-label_smoothing_values = [0.01]
 num_epochs = 3
 fuzzy_layer.weights.requires_grad = True
 
@@ -139,7 +137,7 @@ for k in k_values:
         print(f"Training with k={k}, alpha={alpha}")
 
         model = BigBirdForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=3).to(device)
-        base_optimizer = optim.AdamW(model.parameters(), lr=1e-5)
+        base_optimizer = optim.AdamW(model.parameters(), lr=1e-5,weight_decay=0.01)
         optimizer = Lookahead(base_optimizer, k=k, alpha=alpha)
         criterion = nn.CrossEntropyLoss(label_smoothing=0.01)
         scaler = GradScaler()
