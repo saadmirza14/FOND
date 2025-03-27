@@ -128,6 +128,8 @@ test_dataset = MultiFakeDataset(test_df, tokenizer)
 test_loader = DataLoader(test_dataset, batch_size=2, shuffle=False, pin_memory=True, collate_fn=custom_collate_fn)
 
 
+k_values = [5]
+alpha_values = [0.7]
 num_epochs = 3
 fuzzy_layer.weights.requires_grad = True
 
@@ -137,7 +139,7 @@ for k in k_values:
 
         model = LongformerForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=3).to(device)
         base_optimizer = optim.AdamW(model.parameters(), lr=1e-5,weight_decay=0.01)
-        optimizer = Lookahead(base_optimizer, k=5, alpha=0.7)
+        optimizer = Lookahead(base_optimizer, k=k, alpha=alpha)
         criterion = nn.CrossEntropyLoss(label_smoothing=0.01)
         scaler = GradScaler()
 
