@@ -109,7 +109,7 @@ val_loader = DataLoader(COVID19FakeNewsDataset(val_data, tokenizer), batch_size=
 # Training setup
 base_optimizer = optim.AdamW([
     {'params': model.parameters(), 'lr': 1e-5},
-    {'params': fuzzy_layer.parameters(), 'lr': 1e-5, 'weight_decay': 0.0}
+    {'params': fuzzy_layer.parameters(), 'lr': 1e-5, 'weight_decay': 0.01}
 ])
 optimizer = Lookahead(base_optimizer, k=5, alpha=0.5)
 criterion = nn.CrossEntropyLoss(label_smoothing=0.01)
